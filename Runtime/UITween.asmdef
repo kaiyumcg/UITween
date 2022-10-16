@@ -1,10 +1,14 @@
 {
     "name": "UITween",
     "rootNamespace": "",
-    "references": [],
+    "references": [
+        "UnityExt",
+        "AttributeExt"
+    ],
     "includePlatforms": [
         "Android",
         "CloudRendering",
+        "Editor",
         "GameCoreScarlett",
         "GameCoreXboxOne",
         "iOS",

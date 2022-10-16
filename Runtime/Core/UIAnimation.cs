@@ -2,63 +2,78 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System;
+using UnityEngine.Events;
+using DG.Tweening;
+using UnityEngine.UI;
+using UnityExt;
 
-public sealed class UIAnimation : MonoBehaviour
+namespace UITween
 {
-    [SerializeField] bool startDefaultAutomatically = false;
-    [SerializeField] bool useDelayForDefaultAnimation = false;
-    [SerializeField] float delayForDefaultAnimation = 0.5f;
-    [SerializeField] UIAnimationData defaultAnimation;
-    [SerializeField] List<UIAnimationSet> sets;
-
-    //[EasyButtons.Button("PlayDefault")]
-    void PlayDefaultEd()
+    public class AnimHandle
     {
+        List<Tween> tweens;
+        List<Coroutine> coroutines;
+        MonoBehaviour script;
+        public AnimHandle(MonoBehaviour script)
+        {
+            this.script = script;
+        }
+        public void AddTween(Tween tween)
+        {
+            if (tweens == null) { tweens = new List<Tween>(); }
+            tweens.Add(tween);
+        }
+        public void AddCoroutine(Coroutine coroutine)
+        {
+            if (coroutines == null) { coroutines = new List<Coroutine>(); }
+            coroutines.Add(coroutine);
+        }
+        public void StopAll()
+        {
+            tweens.ExForEach((tw) =>
+            {
+                tw.ExResetDT();
+            });
+            tweens = new List<Tween>();
 
+            coroutines.ExForEach((cor) =>
+            {
+                script.StopCoroutine(cor);
+            });
+            coroutines = new List<Coroutine>();
+        }
     }
 
-    public void PlayDefault(Action OnComplete, bool loop)
+    public abstract class UIAnimation : MonoBehaviour
     {
-        //if (loop)
-        //{
-        //    //todo should stop previously played, user jodi intednd kore je bar bar ektu por por play hobe?
-        //    if (defaultHandle != null) { StopCoroutine(defaultHandle); }
-        //    StartCoroutine(COR());
-        //}
-        //else
-        //{
-        //    defaultAnimation.Play(OnComplete);
-        //}
+        [SerializeField] bool playOnEnable = true;
+        [SerializeField] protected UnityEvent OnComplete;
+        protected AnimHandle handle = null;
 
-        //IEnumerator COR()
-        //{
-        //    while (true)
-        //    {
-        //        var done = false;
-        //        defaultAnimation.Play(() =>
-        //        {
-        //            done = true;
-        //            OnComplete?.Invoke();
-        //        });
+        private void OnEnable()
+        {
+            if (playOnEnable)
+            {
+                Play();
+            }
+        }
 
-        //        while (!done) { yield return null; }
-        //        yield return null;
-        //    }
-        //}
+        /// <summary>
+        /// Play animation. Tags are not considered if it is a single asset type
+        /// </summary>
+        /// <param name="OnComplete">Completion callback</param>
+        /// <param name="tags">Ignored if NOT a list of animation asset</param>
+        public abstract void Play(Action OnComplete = null, params string[] tags);
+
+        /// <summary>
+        /// Stop all animation
+        /// </summary>
+        public virtual void Stop()
+        {
+            if (handle != null)
+            {
+                handle.StopAll();
+            }
+        }
     }
-
-    //todo play single or default animation
-    //todo play anyone with matched name
-    //todo play a set sequentially one after another or all at once
-    //todo stop single or default animation
-    //todo stop anyone with matched name
-    //todo stop a set sequentially one after another or all at once
-    //todo play/stop default in editor with inspector button
-
-    //todo asset e tags name sense make kore or should it not be in the inspector data?
-    //todo set name should not be a single one, right? can be multi tag?
-    public void PlaySetWithName(Action OnComplete, bool loop, bool oneByOne, params string[] names)
-    {
-
-    }   
 }

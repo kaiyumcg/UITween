@@ -1,0 +1,24 @@
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+using UITween;
+using System;
+using UnityExt;
+using AttributeExt;
+
+[CreateAssetMenu(menuName = "UITween/Object/#SCRIPTNAME#", fileName = "New #SCRIPTNAME#", order = 0)]
+public class #SCRIPTNAME# : UIAnimationAsset
+{
+    protected override void OnStop(UIAnimation script)
+    {
+        //Any logic you want to do when stop is called on UIAnimation typed components
+    }
+
+    protected override void Play(UIAnimation script, AnimHandle handle, Action OnComplete)
+    {
+        //Implement how would you handle this effect
+        //coroutine should be started on 'script' and added by 'handle.AddCoroutine(coroutine)'
+        //any dotween should be added by 'handle.AddTween(tween)'
+        //At the end, invoke 'OnComplete'
+    }
+}
