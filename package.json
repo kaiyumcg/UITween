@@ -1,0 +1,15 @@
+{
+  "name": "com.kaiyum.uitween",
+  "author": "Md Al Kaiyum (Rumman)",
+  "displayName": "UI Tween",
+  "version": "1.0.0",
+  "unity": "2018.3",
+  "description": "Create UI animation into scriptable object and reuse them like crazy while still maintaining project complexity",
+  "category": "Unity",
+  "keywords": [
+    "UI"
+  ],
+  "dependencies": {
+	"com.kaiyum.unityext": "https://github.com/kaiyumcg/UnityExt.git"
+  }
+}
