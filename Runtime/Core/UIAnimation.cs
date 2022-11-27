@@ -3,12 +3,14 @@ using System.Collections.Generic;
 using UnityEngine;
 using System;
 using UnityEngine.Events;
-using DG.Tweening;
+//using DG.Tweening;
 using UnityEngine.UI;
 using UnityExt;
 
 namespace UITween
 {
+    public class Tween { }
+
     public class AnimHandle
     {
         List<Tween> tweens;
@@ -32,7 +34,7 @@ namespace UITween
         {
             tweens.ExForEach((tw) =>
             {
-                tw.ExResetDT();
+                //tw.ExResetDT();
             });
             tweens = new List<Tween>();
 

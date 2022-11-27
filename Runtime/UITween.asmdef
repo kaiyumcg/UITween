@@ -2,8 +2,8 @@
     "name": "UITween",
     "rootNamespace": "",
     "references": [
-        "UnityExt",
-        "AttributeExt"
+        "AttributeExt",
+        "UnityExt"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],
