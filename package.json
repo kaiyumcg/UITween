@@ -2,7 +2,7 @@
   "name": "com.kaiyum.uitween",
   "displayName": "UI Tween",
   "version": "1.0.0",
-  "unity": "2020.3.20f1",
+  "unity": "2020.3",
   "description": "Create UI animation into scriptable object and reuse them like crazy while still maintaining project complexity",
   "licence": "MIT",
   "category": "Unity",
