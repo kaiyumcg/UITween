@@ -3,7 +3,7 @@
     "rootNamespace": "",
     "references": [
         "UITween",
-        "EditorUtil"
+        "KEditorUtil"
     ],
     "includePlatforms": [
         "Editor"
