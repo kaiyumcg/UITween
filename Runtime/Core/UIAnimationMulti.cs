@@ -27,7 +27,7 @@ namespace UITween
             var files = new List<UIAnimationAsset>();
             if (willCountTags)
             {
-                animationFiles.ExForEach((file) =>
+                animationFiles.ExForEachSafe((file) =>
                 {
                     if (file.Tags.HasAll(tags))
                     {

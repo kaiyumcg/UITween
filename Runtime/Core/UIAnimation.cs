@@ -32,13 +32,13 @@ namespace UITween
         }
         public void StopAll()
         {
-            tweens.ExForEach((tw) =>
+            tweens.ExForEachSafe((tw) =>
             {
                 //tw.ExResetDT();
             });
             tweens = new List<Tween>();
 
-            coroutines.ExForEach((cor) =>
+            coroutines.ExForEachSafe((cor) =>
             {
                 script.StopCoroutine(cor);
             });
