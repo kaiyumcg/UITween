@@ -4,21 +4,20 @@ using UnityEngine;
 using UITween;
 using System;
 using UnityExt;
-using AttributeExt;
+using AttributeExt2;
 
-[CreateAssetMenu(menuName = "UITween/Object/#SCRIPTNAME#", fileName = "New #SCRIPTNAME#", order = 0)]
+[CreateAssetMenu(menuName = "Kaiyum/UITween/Object/#SCRIPTNAME#", fileName = "New #SCRIPTNAME#", order = 0)]
 public class #SCRIPTNAME# : UIAnimationAsset
 {
-    protected override void OnStop(UIAnimation script)
+    protected override void OnStop(UIAnimation callerContext)
     {
-        //Any logic you want to do when stop is called on UIAnimation typed components
+        //Any logic you want to do when Stop() is called on UIAnimation typed components
     }
 
-    protected override void Play(UIAnimation script, AnimHandle handle, Action OnComplete)
+    protected override void Play(UIAnimation callerContext, AnimHandle handle, Action OnComplete)
     {
         //Implement how would you handle this effect
-        //coroutine should be started on 'script' and added by 'handle.AddCoroutine(coroutine)'
-        //any dotween should be added by 'handle.AddTween(tween)'
+        //coroutine should be started on 'callerContext' and added by 'handle.AddCoroutine(coroutine)'
         //At the end, invoke 'OnComplete'
     }
 }

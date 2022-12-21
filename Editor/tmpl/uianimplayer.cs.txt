@@ -1,0 +1,26 @@
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+using UITween;
+using System;
+using UnityExt;
+using AttributeExt2;
+
+[AddComponentMenu("Kaiyum/UITween/#SCRIPTNAME#")]
+public sealed class #SCRIPTNAME# : UIAnimation
+{
+    //fields related to '#SCRIPTNAME#' script
+
+
+    public override void Play(Action OnComplete = null, TagComparer tagComparer = TagComparer.And, params string[] tags)
+    {
+        if (handle == null) { handle = new AnimHandle(this); }
+        //use 'ValidateAgainstTags()' for validating against tags and comparer
+        //at the end of playing animation files, invoke 'OnComplete'
+    }
+    public override void Stop()
+    {
+        base.Stop();
+        //call the stop() method on animation files to your liking
+    }
+}

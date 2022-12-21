@@ -9,7 +9,7 @@ namespace UITween
     {
         [SerializeField] List<string> tags;
         internal List<string> Tags { get { return tags; } }
-        protected internal abstract void Play(UIAnimation script, AnimHandle handle, Action OnComplete);
-        protected internal abstract void OnStop(UIAnimation script);
+        protected internal abstract void Play(UIAnimation callerContext, AnimHandle handle, Action OnComplete);
+        protected internal abstract void OnStop(UIAnimation callerContext);
     }
 }

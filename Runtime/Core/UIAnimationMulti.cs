@@ -14,32 +14,16 @@ namespace UITween
         PlayAtOnce = 3,
         PlayAtOnceLoop = 4
     }
-
-    [AddComponentMenu("UITween/UI Animation Multiple")]
+    [AddComponentMenu("Kaiyum/UITween/UI Animation Multiple")]
     public sealed class UIAnimationMulti : UIAnimation
     {
         [SerializeField] List<UIAnimationAsset> animationFiles;
         [SerializeField] UIAnimationMultiMode mode = UIAnimationMultiMode.Playlist;
-        public override void Play(Action OnComplete = null, params string[] tags)
+        public override void Play(Action OnComplete = null, TagComparer tagComparer = TagComparer.And, params string[] tags)
         {
             if (handle == null) { handle = new AnimHandle(this); }
-            var willCountTags = tags != null && tags.Length > 0;
-            var files = new List<UIAnimationAsset>();
-            if (willCountTags)
-            {
-                animationFiles.ExForEachSafe((file) =>
-                {
-                    if (file.Tags.HasAll(tags))
-                    {
-                        files.Add(file);
-                    }
-                });
-            }
-            else
-            {
-                files = animationFiles;
-            }
-            if (files == null || files.Count == 0) { OnComplete?.Invoke(); return; }
+            var files = ValidateAgainstTags(animationFiles, tagComparer, tags);
+            if (!files.ExIsValid()) { OnComplete?.Invoke(); return; }
 
             Coroutine cor = null;
             if (mode == UIAnimationMultiMode.PlayAtOnce || mode == UIAnimationMultiMode.PlayAtOnceLoop)
@@ -59,7 +43,6 @@ namespace UITween
             {
                 handle.AddCoroutine(cor);
             }
-
             IEnumerator Playlist(Action OnComplete)
             {
                 while (true)
@@ -76,7 +59,6 @@ namespace UITween
                 }
                 OnComplete?.Invoke();
             }
-
             IEnumerator PlayAtOnce(Action OnComplete)
             {
                 while (true)
@@ -93,7 +75,6 @@ namespace UITween
                 }
                 OnComplete?.Invoke();
             }
-
             IEnumerator Shuffle()
             {
                 while (true)
@@ -109,15 +90,10 @@ namespace UITween
         public override void Stop()
         {
             base.Stop();
-            if (animationFiles != null && animationFiles.Count > 0)
+            animationFiles.ExForEachSafe((i) =>
             {
-                for (int i = 0; i < animationFiles.Count; i++)
-                {
-                    var file = animationFiles[i];
-                    if (file == null) { continue; }
-                    file.OnStop(this);
-                }
-            }
+                i.OnStop(this);
+            });
         }
     }
 }

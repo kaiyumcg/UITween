@@ -28,5 +28,23 @@ namespace UITween
             }
             return hasIt;
         }
+        internal static bool HasAny(this List<string> list, string[] items)
+        {
+            var hasIt = false;
+            if (items != null && items.Length > 0)
+            {
+                for (int i = 0; i < items.Length; i++)
+                {
+                    var item = items[i];
+                    if (string.IsNullOrEmpty(item) || string.IsNullOrWhiteSpace(item)) { continue; }
+                    if (list.Contains(item))
+                    {
+                        hasIt = true;
+                        break;
+                    }
+                }
+            }
+            return hasIt;
+        }
     }
 }

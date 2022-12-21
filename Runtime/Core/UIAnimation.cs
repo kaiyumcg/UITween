@@ -3,27 +3,18 @@ using System.Collections.Generic;
 using UnityEngine;
 using System;
 using UnityEngine.Events;
-//using DG.Tweening;
 using UnityEngine.UI;
 using UnityExt;
 
 namespace UITween
 {
-    public class Tween { }
-
     public class AnimHandle
     {
-        List<Tween> tweens;
         List<Coroutine> coroutines;
-        MonoBehaviour script;
-        public AnimHandle(MonoBehaviour script)
+        MonoBehaviour callerContext;
+        public AnimHandle(MonoBehaviour callerContext)
         {
-            this.script = script;
-        }
-        public void AddTween(Tween tween)
-        {
-            if (tweens == null) { tweens = new List<Tween>(); }
-            tweens.Add(tween);
+            this.callerContext = callerContext;
         }
         public void AddCoroutine(Coroutine coroutine)
         {
@@ -32,18 +23,18 @@ namespace UITween
         }
         public void StopAll()
         {
-            tweens.ExForEachSafe((tw) =>
-            {
-                //tw.ExResetDT();
-            });
-            tweens = new List<Tween>();
-
             coroutines.ExForEachSafe((cor) =>
             {
-                script.StopCoroutine(cor);
+                callerContext.StopCoroutine(cor);
             });
             coroutines = new List<Coroutine>();
         }
+    }
+
+    public enum TagComparer
+    {
+        And = 0,
+        Or = 1
     }
 
     public abstract class UIAnimation : MonoBehaviour
@@ -59,13 +50,50 @@ namespace UITween
                 Play();
             }
         }
+        public abstract void Play(Action OnComplete = null, TagComparer tagComparer = TagComparer.And, params string[] tags);
 
-        /// <summary>
-        /// Play animation. Tags are not considered if it is a single asset type
-        /// </summary>
-        /// <param name="OnComplete">Completion callback</param>
-        /// <param name="tags">Ignored if NOT a list of animation asset</param>
-        public abstract void Play(Action OnComplete = null, params string[] tags);
+        protected List<UIAnimationAsset> ValidateAgainstTags(List<UIAnimationAsset> inputFiles, TagComparer comparer, string[] tagsToCompare)
+        {
+            List<UIAnimationAsset> result = inputFiles;
+            if (tagsToCompare.ExIsValid())
+            {
+                result = new List<UIAnimationAsset>();
+                inputFiles.ExForEachSafe((i) =>
+                {
+                    if (comparer == TagComparer.And)
+                    {
+                        if (i.Tags.HasAll(tagsToCompare))
+                        {
+                            result.Add(i);
+                        }
+                    }
+                    else if (comparer == TagComparer.Or)
+                    {
+                        if (i.Tags.HasAny(tagsToCompare))
+                        {
+                            result.Add(i);
+                        }
+                    }
+                });
+            }
+            return result;
+        }
+        protected bool ValidateAgainstTags(UIAnimationAsset inputFile, TagComparer comparer, string[] tagsToCompare)
+        {
+            var valid = true;
+            if (tagsToCompare.ExIsValid())
+            {
+                if (comparer == TagComparer.And && !inputFile.Tags.HasAll(tagsToCompare))
+                {
+                    valid = false;
+                }
+                else if (comparer == TagComparer.Or && !inputFile.Tags.HasAny(tagsToCompare))
+                {
+                    valid = false;
+                }
+            }
+            return valid;
+        }
 
         /// <summary>
         /// Stop all animation

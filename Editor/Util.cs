@@ -12,4 +12,10 @@ public static class Util
     {
         KEditorUtil.ProjectResourceUtil.CreateScriptFromTemplate("NewUITween", "UITween", "Editor", "tmpl");
     }
+
+    [MenuItem(itemName: "Assets/Create/Kaiyum/UITween/Script/Create New UI Animation Player Script", isValidateFunction: false, priority: 52)]
+    public static void CreateAnimPlayerScriptFromTemplate()
+    {
+        KEditorUtil.ProjectResourceUtil.CreateScriptFromTemplate("NewUIAnimationPlayer", "UITween", "Editor", "tmpl", "uianimplayer.cs");
+    }
 }

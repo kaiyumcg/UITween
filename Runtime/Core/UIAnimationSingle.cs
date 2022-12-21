@@ -10,15 +10,17 @@ namespace UITween
         Once = 0,
         Loop = 1
     }
-
-    [AddComponentMenu("UITween/UI Animation Single")]
+    [AddComponentMenu("Kaiyum/UITween/UI Animation Single")]
     public sealed class UIAnimationSingle : UIAnimation
     {
         [SerializeField] UIAnimationAsset animationFile;
         [SerializeField] UIAnimationSingleMode mode = UIAnimationSingleMode.Once;
-        public override void Play(Action OnComplete = null, params string[] tags)
+        public override void Play(Action OnComplete = null, TagComparer tagComparer = TagComparer.And, params string[] tags)
         {
             if (handle == null) { handle = new AnimHandle(this); }
+            var valid = ValidateAgainstTags(animationFile, tagComparer, tags);
+            if (!valid) { OnComplete?.Invoke(); return; }
+
             if (mode == UIAnimationSingleMode.Once)
             {
                 animationFile.Play(this, handle, OnComplete);
@@ -39,7 +41,6 @@ namespace UITween
                 }
             }
         }
-
         public override void Stop()
         {
             base.Stop();
