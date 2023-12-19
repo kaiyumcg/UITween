@@ -23,7 +23,7 @@ namespace UITween
         }
         public void StopAll()
         {
-            coroutines.ExForEachSafe((cor) =>
+            coroutines.ExForEachSafeCustomClass((cor) =>
             {
                 callerContext.StopCoroutine(cor);
             });
